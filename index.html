@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Random Icebreaker Questions</title>
+		<script>
+			
+			// The watch id references the current `watchAcceleration`
+			var watchID = null;
+			var previousAcceleration = { x: null, y: null, z: null };
+			var strDevice = "";
+			var strDeviceName = "";
+			var strDeviceAccel = 0;
+			
+			
+			var arrQuestions = [
+								
+								{
+								category: "Career / Education",
+								active: 1,
+								questions: [
+											"Where did you go to high school?",
+											"Where did you go to college?",
+											"What was your major in college?",
+											"What do you do for a living?",
+											"How did you decide to go into your field?",
+											"What was your first job?",
+											"Which of your jobs have you had the longest?",
+											"If you could take any class, free of charge, and had unlimited time, what would it be?",
+											"If you could have given yourself one piece of advice when you graduated, what would it be?",
+											"What’s your dream job?",
+											"Would you work if you didn’t need the money?"
+											]
+								},
+								{
+								category: "Friends",
+								active: 1,
+								questions: [
+											"Who is your best friend? How long have you been friends?",
+											"Have you been to any good parties lately?",
+											"Do you like to have parties at your house?",
+											"Do you like dinner parties?",
+											"Would you rather have dinner with a few friends or a go to a huge party?",
+											"Do you like to go to clubs?",
+											"Do you like to hang out at the bar?",
+											"Do you have any good friends of the opposite sex?",
+											"What do you and your friends like to do together?",
+											"Are you a person with a few best friends or a person with a ton of friends in different places?"
+											]
+								},
+								{
+								category: "Future",
+								active: 1,
+								questions: [
+											"Where do you see yourself in 10 years?",
+											"Do you like your job?",
+											"Do you want to get married someday?",
+											"Do you want to have kids?",
+											"What is your biggest priority in life?",
+											"What’s your #1 goal?",
+											"What are 3 things you’d like in your life in 5 years that you don’t have now?",
+											"How much money is “enough” for you?",
+											"What’s more important to your future - stability or excitement?",
+											"Do you like change?"
+											]
+								},
+								{
+								category: "Growing Up",
+								active: 1,
+								questions: [
+											"How many brothers and sisters do you have? Do you get along? How old are they?",
+											"Where did you grow up?",
+											"Are your parents still together?",
+											"Are you close with your parents?",
+											"Did you have a lot of money growing up?",
+											"What’s your most vivid childhood memory?",
+											"What was your favorite childhood toy?",
+											"What was your favorite childhood TV show?",
+											"What was your favorite game as a child?",
+											"What was your favorite sport as a child?",
+											"What was your favorite thing to do as a child?",
+											"What was your favorite childhood pet?",
+											"What was your favorite subject in school as a child?",
+											"Did you like school as a child?",
+											"What is your favorite family holiday ritual?",
+											"What is the best thing about your family?",
+											"What is the worst thing about your family?",
+											"Would you say your family was dysfunctional growing up?",
+											"Who was your favorite childhood teacher?",
+											"If there could be a caption under your name in your high school yearbook, what would it say?"
+											]
+								},
+								{
+								category: "Likes and Dislikes",
+								active: 1,
+								questions: [
+											"Have you read any good books lately?",
+											"What’s the last book that you read?",
+											"Have you seen any good movies lately?",
+											"What’s the last movie that you saw?",
+											"Do you have a favorite video game?",
+											"What have you been listening to lately?",
+											"What do you like to do for fun?",
+											"What is your favorite animal?",
+											"What’s your favorite color?",
+											"Where do you shop for food?",
+											"Where do you shop for clothes?",
+											"What’s your favorite food?",
+											"What’s your favorite restaurant?",
+											"What’s your favorite summer activity?",
+											"What’s your favorite thing to cook?",
+											"What’s your favorite alcoholic drink?",
+											"What’s your favorite non-alcoholic drink?",
+											"What’s your favorite fast food?",
+											"What’s your favorite chain restaurant?",
+											"What’s your favorite big box store?",
+											"What food is your guilty pleasure?",
+											"How would you describe your personal style of clothes?",
+											"What’s your favorite TV show?",
+											"What’s your favorite ‘80s TV show?",
+											"What’s your favorite movie?",
+											"What’s your favorite band?",
+											"Who’s your favorite actress?",
+											"Who’s your favorite actor?",
+											"What’s your favorite sport?",
+											"Do you have any hobbies?",
+											"Who is your favorite athlete?",
+											"Who is your favorite visual artist?",
+											"What’s your favorite reality show?",
+											"What’s your favorite dessert?",
+											"Do you consider yourself conservative or liberal?",
+											"What’s your favorite cereal?",
+											"What’s your favorite flavor of ice cream?",
+											"What’s your favorite cold weather activity?",
+											"What’s your favorite board game?",
+											"What’s your favorite snack food?",
+											"Do you have any pets?",
+											"Do you like cats or dogs better?",
+											"What’s your most frequented website?",
+											"What’s your favorite social networking site?",
+											"What’s your favorite app?",
+											"What’s your worst habit?",
+											"What’s your favorite way to waste time?",
+											"What’s your favorite candy?",
+											"What food do you hate?",
+											"Who is the most annoying Top 40 artist today?",
+											"Who is the most annoying celebrity?",
+											"Do you believe in God?",
+											"Do you think your country is the best in the world?",
+											"What’s the weirdest food you’ve ever eaten?",
+											"What’s the world’s greatest invention?",
+											"What do you feel is your best physical feature?"
+											]
+								},
+								{
+								category: "Past",
+								active: 1,
+								questions: [
+											"What’s your biggest regret?",
+											"What’s your happiest memory?",
+											"Have you ever been arrested?",
+											"Have you ever shoplifted anything?",
+											"What is one thing you wish you would have known when you were younger?",
+											"What’s your biggest accomplishment?",
+											"What was your proudest moment?",
+											"What was your most emotional moment?",
+											"What was your scariest moment?",
+											"When do you remember being the angriest?"
+											]
+								},
+								{
+								category: "Residence",
+								active: 1,
+								questions: [
+											"Do you have roommates?",
+											"Do you own a house?",
+											"How would you describe your decorating style?",
+											"What’s your favorite style of architecture?",
+											"How many places have you lived?",
+											"How long does it take you to “get ready” in the morning?",
+											"What is your most prized possession?",
+											"What was the longest you lived in one place?",
+											"Why do you live in this city? Would you move if you could?",
+											"Do you like being at home?"
+											]
+								},
+								{
+								category: "Romance",
+								active: 1,
+								questions: [
+											"Who was your most recent girlfriend or boyfriend?",
+											"How long was your previous relationship?",
+											"How did your last relationship end?",
+											"Have you been to any interesting weddings lately?",
+											"What are your relationship deal breakers?",
+											"Have you ever been in love?",
+											"Do you think opposites attract?",
+											"Are looks or intelligence more important in a mate?",
+											"What are the top 5 qualities you find attractive in a mate?",
+											"Can love last a lifetime?",
+											"How old were you when you had your first kiss?",
+											"How old were you when you had your first girlfriend or boyfriend?",
+											"What was your first-ever date like?",
+											"Did you go to the prom?",
+											"How long was your longest-lasting relationship?"
+											]
+								},
+								{
+								category: "Theoretical",
+								active: 1,
+								questions: [
+											"If you won a million dollars in the lottery tomorrow, what would you spend it on?",
+											"If someone gave you $100 to spend tomorrow, what would you spend it on?",
+											"If you could do whatever you wanted to do, all day long, what would you do?",
+											"If you could have a dinner party with 3 people, living or dead, who would you invite?",
+											"If you could choose to have any superpower, what would it be?",
+											"What are 3 things you would want with you if you were stranded on a desert island?",
+											"What famous person do people say you resemble?",
+											"What animal do you resemble?",
+											"If you had to be trapped in a TV show for a month, which one would it be?",
+											"Do you believe in ESP?",
+											"If you could be any kind of circus performer, what would you be?",
+											"If you were to get a tattoo, what would it be?",
+											"If you could play any musical instrument well, what would it be?",
+											"If you could speak any language fluently, what would it be?",
+											"What would you name your daughter if she was born tomorrow?",
+											"What would you name your son if he was born tomorrow?"
+											]
+								},
+								{
+								category: "Travel",
+								active: 1,
+								questions: [
+											"Have you ever been to a foreign country? Which was your favorite?",
+											"If you could travel anywhere in the world tomorrow, where would you go first?",
+											"Where was the last place that you traveled?",
+											"Is there any place that you wouldn’t like to travel?",
+											"What’s your favorite city?",
+											"What’s the longest road trip you’ve ever been on?",
+											"Would you get rid of your car if public transportation was available everywhere?",
+											"What’s the oddest foreign food you’ve ever eaten?",
+											"Name a belief in a foreign culture that you don’t understand or agree with.",
+											"Name something about a foreign country that you wish happened in your country."
+											]
+								}
+								
+							
+								
+							 							 
+			];
+
+			function funRandomQuestion(){
+				//create an array to store our list of active questions
+				var arrActiveQuestions = [];
+				//push active questions to our array
+				for (var i=0;i<arrQuestions.length;i++){
+					if(arrQuestions[i].active == 1){
+						for (var x=0;x<arrQuestions[i].questions.length;x++){
+							arrActiveQuestions.push(arrQuestions[i].questions[x]);
+						}
+					}
+				}
+				//get the random question
+				return arrActiveQuestions[funRandomInteger(0,(arrActiveQuestions.length-1))];
+			}
+			
+			function funSuccess(){
+				//
+			}
+			
+			function funError(){
+				//
+			}
+			
+			function funRandomInteger(inc_min, inc_max){
+				return Math.floor(Math.random() * (inc_max - inc_min + 1)) + inc_min;
+			}
+			
+			function preventBehavior(e)
+			{
+				e.preventDefault();
+			};
+			
+			
+			
+			
+			
+			// Start watching the acceleration
+			//
+			function startWatch() {
+				
+				// Update acceleration every 3 seconds
+				var options = { frequency: 300 };
+				
+				watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+			}
+			
+			// Stop watching the acceleration
+			//
+			function stopWatch() {
+				if (watchID) {
+					navigator.accelerometer.clearWatch(watchID);
+					watchID = null;
+				}
+			}
+			
+			// onSuccess: Get a snapshot of the current acceleration
+			//
+			function onSuccess(acceleration) {
+				
+				var accelerationChange = {};
+				if (previousAcceleration.x !== null) {
+					accelerationChange.x = Math.abs(previousAcceleration.x, acceleration.x);
+					accelerationChange.y = Math.abs(previousAcceleration.y, acceleration.y);
+					accelerationChange.z = Math.abs(previousAcceleration.z, acceleration.z);
+				}
+				if (accelerationChange.x + accelerationChange.y + accelerationChange.z > strDeviceAccel) {
+					// Shake detected
+					funShakeDetected();
+				} else {
+					previousAcceleration = {
+						x: acceleration.x,
+						y: acceleration.y,
+						z: acceleration.z
+					}
+				}
+				
+				
+			}
+			
+			// onError: Failed to get the acceleration
+			//
+			function onError() {
+				alert('Sorry, the accelerometer for your ' + strDeviceName + ' seems to be reporting an error.');
+			}
+			
+			
+
+			function funStart(){
+				funDevicePrep();
+				document.getElementById("div_play_tabnavigation_settings").addEventListener("touchstart",funSettingsLaunch, false);
+				document.getElementById("div_settings_tabnavigation_play").addEventListener("touchstart",funPlayLaunch, false);
+				document.getElementById("div_play_spinner_bg").addEventListener("webkitAnimationEnd", funSpinDone, false);
+				funPlayLaunch();
+			}
+			
+			function funDevicePrep(){
+				if(document.height == 1024){
+					strDevice = "ipad";
+					strDeviceName = "iPad";
+					strDeviceAccel = 22;
+				}else if(document.height == 568){
+					strDevice = "iphone5";
+					strDeviceName = "iPhone";
+					strDeviceAccel = 30;
+				}else{
+					strDevice = "iphone";
+					strDeviceName = "iPhone";
+					strDeviceAccel = 30;
+				}
+				document.getElementById("body_all").className = "body_" + strDevice;
+			}
+			
+			function funPlayLaunch(){
+				document.getElementById("div_play").className = "div_play_active";
+				document.getElementById("div_settings").className = "div_settings_inactive";
+				document.getElementById("div_play_spinner_text").innerHTML = "Shake Your " + strDeviceName + " For A Random Question";
+				startWatch();
+			}
+			
+			
+			
+			
+			function funShakeDetected(){
+				stopWatch();
+				previousAcceleration = {
+					x: null,
+					y: null,
+					z: null
+				}
+				document.getElementById("div_play_spinner_bg").className = "div_play_spinner_bg_active";
+				document.getElementById("div_play_spinner_text").innerHTML = "Searching...";
+				document.getElementById("div_play_spinner_ingr").innerHTML = "";
+			}
+			
+			function funSpinDone(){
+				var strNewQuestion = funRandomQuestion();
+				document.getElementById("div_play_spinner_text").innerHTML = strNewQuestion;
+				document.getElementById("div_play_spinner_bg").className = "div_play_spinner_bg_inactive";
+				startWatch();
+			}
+			
+			
+			function funSettingsLaunch(){
+				stopWatch();
+				document.getElementById("div_settings").className = "div_settings_active";
+				document.getElementById("div_play").className = "div_play_inactive";
+				document.getElementById("div_settings_categories").innerHTML = "";
+				for (var i=0;i<arrQuestions.length;i++){
+					var elmCatDiv = document.createElement("div");
+					elmCatDiv.addEventListener("touchend", funSettingsCategoryTapped, false);
+					elmCatDiv.innerHTML = arrQuestions[i].category;
+					if(arrQuestions[i].active == 1){
+						elmCatDiv.className = "div_settings_category_active";
+					}else{
+						elmCatDiv.className = "div_settings_category_inactive";
+					}
+					document.getElementById("div_settings_categories").appendChild(elmCatDiv);
+				}
+			}
+			
+			function funSettingsCategoryTapped(e){
+				for (var i=0;i<arrQuestions.length;i++){
+					if(e.target.innerHTML == arrQuestions[i].category){
+						if(arrQuestions[i].active == 0){
+							arrQuestions[i].active = 1;
+							e.target.className = "div_settings_category_active";
+						}else{
+							arrQuestions[i].active = 0;
+							e.target.className = "div_settings_category_inactive";
+						}
+						if(document.getElementsByClassName("div_settings_category_active").length == 0){
+							navigator.notification.alert(
+														 'You must use at least one category.',  // message
+														 funSuccess,         // callback
+														 'Sorry',            // title
+														 'Ok'                  // buttonName
+														 );
+							funSettingsCategoryTapped(e);
+						}
+					}
+				}
+			}
+			
+			
+			
+		</script>
+		<style>
+			body, div, img{
+				margin: 0px;
+				padding: 0px;
+			}
+			body {
+				width: 100%;
+				-webkit-background-size: cover;
+				background-size: cover;
+			}
+			.div_play_active{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+			}
+			.div_play_inactive{
+				position: absolute;
+				top: -10000px;
+				left: -10000px;
+			}
+			.div_settings_active{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+			}
+			.div_settings_inactive{
+				position: absolute;
+				top: -10000px;
+				left: -10000px;
+			}
+			#div_play_spinner_bg{
+				position: absolute;
+				background: url('img/spinner_bg.png');
+				background-size: 100%;
+				-webkit-animation-duration: 2s;
+				-webkit-animation-timing-function: linear;
+				-webkit-animation-iteration-count: 1;
+			}
+			.div_play_spinner_bg_active {
+				-webkit-animation-name: anmSpinner;
+			}
+			.div_play_spinner_bg_inactive {
+				-webkit-animation-name: none;
+			}
+			@-webkit-keyframes anmSpinner
+            {
+                0% {
+					-webkit-transform: scale(1.0) rotate(0deg);
+                }
+                25% {
+                    -webkit-transform: scale(1.1) rotate(90deg);
+                }
+                50% {
+                    -webkit-transform: scale(1.2) rotate(180deg);
+                }
+                75% {
+                    -webkit-transform: scale(1.1) rotate(270deg);
+                }
+                100% {
+					-webkit-transform: scale(1.0) rotate(0deg);
+                }
+            }
+			#div_play_tabnavigation, #div_settings_tabnavigation{
+				background-size: 100%;
+				position:absolute;
+			}
+			#div_play_tabnavigation_settings, #div_settings_tabnavigation_play{
+				position:absolute;
+				top: 0px;
+			}
+			#div_play_spinner_textcont {
+				position: absolute;
+				display: table;
+			}
+			#div_play_spinner_text {
+				color: #000;
+				display: table-cell;
+				vertical-align: middle;
+				text-align: center;
+			}
+			#div_settings_text{
+				color: #000;
+				position: absolute;
+				background: #FFF;
+			}
+			#div_settings_categories{
+				position: absolute;
+			}
+			#div_settings_categories div{
+				color: #000;
+				position: relative;
+				text-align: center;
+			}
+			.div_settings_category_active{
+				background: #ffffff;
+			}
+			.div_settings_category_inactive{
+				background: #f5444e;
+			}
+			/***************************************
+			 BEGIN IPAD SPECIFIC
+			 ****************************************/
+			.body_ipad {
+				background: url('img/background_ipad.jpg') no-repeat center center fixed;
+				width: 768px;
+				height: 1004px;
+			}
+			.body_ipad #div_play_spinner_bg{
+				left: 84px;
+				top: 280px;
+				width: 600px;
+				height: 600px;
+			}
+			.body_ipad #div_play_tabnavigation, .body_ipad #div_settings_tabnavigation{
+				top: 955px;
+				left: 0px;
+				width: 768px;
+				height: 49px;
+			}
+			.body_ipad #div_play_tabnavigation{
+				background: url('img/ipad_play.png');
+			}
+			.body_ipad #div_settings_tabnavigation{
+				background: url('img/ipad_settings.png');
+			}
+			.body_ipad #div_play_tabnavigation_settings, .body_ipad #div_settings_tabnavigation_play{
+				width: 75px;
+				height: 49px;
+			}
+			.body_ipad #div_play_tabnavigation_settings{
+				left: 400px;
+			}
+			.body_ipad #div_settings_tabnavigation_play{
+				left: 290px;
+			}
+			.body_ipad #div_play_spinner_textcont {
+				left: 218px;
+				top: 420px;
+				width: 340px;
+				height: 330px;
+			}
+			.body_ipad #div_play_spinner_text {
+				font-family: MarkerFelt-Wide;
+				font-size: 40px;
+				width: 260px;
+			}
+			.body_ipad #div_settings_text{
+				font-family: MarkerFelt-Wide;
+				font-size:20px;
+				width: 600px;
+				padding: 20px;
+				left: 62px;
+				top: 246px;
+				border-radius: 10px;
+				border: 3px solid black;
+			}
+			.body_ipad #div_settings_categories{
+				left: 148px;
+				top: 380px;
+				width: 500px;
+				height: 600px;
+			}
+			.body_ipad #div_settings_categories div{
+				font-family: MarkerFelt-Wide;
+				font-size:24px;
+				width: 200px;
+				padding: 6px;
+				margin: 10px;
+				border-radius: 10px;
+				border: 3px solid black;
+				float: left;
+			}
+			/***************************************
+			 END IPAD SPECIFIC
+			 ****************************************/
+			
+			/***************************************
+			 BEGIN IPHONE SPECIFIC
+			 ****************************************/
+						.body_iphone {
+							background: url('img/background_iphone.jpg') no-repeat center center fixed;
+							width: 320px;
+							height: 460px;
+						}
+						.body_iphone #div_play_spinner_bg{
+							left: 30px;
+							top: 140px;
+							width: 260px;
+							height: 260px;
+						}
+						.body_iphone #div_play_tabnavigation, .body_iphone #div_settings_tabnavigation{
+							top: 411px;
+							left: 0px;
+							width: 320px;
+							height: 49px;
+						}
+						.body_iphone #div_play_tabnavigation{
+							background: url('img/iphone_play.png');
+						}
+						.body_iphone #div_settings_tabnavigation{
+							background: url('img/iphone_settings.png');
+						}
+						.body_iphone #div_play_tabnavigation_settings, .body_iphone #div_settings_tabnavigation_play{
+							width: 160px;
+							height: 49px;
+						}
+						.body_iphone #div_play_tabnavigation_settings{
+							left: 160px;
+						}
+						.body_iphone #div_settings_tabnavigation_play{
+							left: 0px;
+						}
+						.body_iphone #div_play_spinner_textcont {
+							left: 85px;
+							top: 190px;
+							width: 150px;
+							height: 150px;
+						}
+						.body_iphone #div_play_spinner_text {
+							font-family: MarkerFelt-Thin;
+							font-size: 22px;
+							width: 150px;
+						}
+						.body_iphone #div_settings_text{
+							font-family: MarkerFelt-Thin;
+							font-size:14px;
+							width: 260px;
+							padding: 8px;
+							left: 20px;
+							top: 100px;
+							border-radius: 4px;
+							border: 3px solid black;
+						}
+						.body_iphone #div_settings_categories{
+							left: 40px;
+							top: 192px;
+							width: 240px;
+						}
+						.body_iphone #div_settings_categories div{
+							font-family: MarkerFelt-Thin;
+							font-size:12px;
+							width: 100px;
+							padding: 6px 3px 6px 3px;
+							margin: 3px;
+							border-radius: 6px;
+							border: 3px solid black;
+							float: left;
+						}
+			/***************************************
+			 END IPHONE SPECIFIC
+			 ****************************************/
+			/***************************************
+			 BEGIN IPHONE5 SPECIFIC
+			 ****************************************/
+			.body_iphone5 {
+				background: url('img/background_iphone5.jpg') no-repeat center center fixed;
+				width: 320px;
+				height: 504px;
+			}
+			.body_iphone5 #div_play_spinner_bg{
+				left: 30px;
+				top: 200px;
+				width: 260px;
+				height: 260px;
+			}
+			.body_iphone5 #div_play_tabnavigation, .body_iphone5 #div_settings_tabnavigation{
+				top: 499px;
+				left: 0px;
+				width: 320px;
+				height: 49px;
+			}
+			.body_iphone5 #div_play_tabnavigation{
+				background: url('img/iphone_play.png');
+			}
+			.body_iphone5 #div_settings_tabnavigation{
+				background: url('img/iphone_settings.png');
+			}
+			.body_iphone5 #div_play_tabnavigation_settings, .body_iphone5 #div_settings_tabnavigation_play{
+				width: 160px;
+				height: 49px;
+			}
+			.body_iphone5 #div_play_tabnavigation_settings{
+				left: 160px;
+			}
+			.body_iphone5 #div_settings_tabnavigation_play{
+				left: 0px;
+			}
+			.body_iphone5 #div_play_spinner_textcont {
+				left: 85px;
+				top: 254px;
+				width: 150px;
+				height: 150px;
+			}
+			.body_iphone5 #div_play_spinner_text {
+				font-family: MarkerFelt-Thin;
+				font-size: 22px;
+				width: 150px;
+			}
+			.body_iphone5 #div_settings_text{
+				font-family: MarkerFelt-Thin;
+				font-size:14px;
+				width: 260px;
+				padding: 8px;
+				left: 20px;
+				top: 120px;
+				border-radius: 4px;
+				border: 3px solid black;
+			}
+			.body_iphone5 #div_settings_categories{
+				left: 40px;
+				top: 212px;
+				width: 240px;
+			}
+			.body_iphone5 #div_settings_categories div{
+				font-family: MarkerFelt-Thin;
+				font-size:12px;
+				width: 100px;
+				padding: 12px 3px 12px 3px;
+				margin: 3px;
+				border-radius: 6px;
+				border: 3px solid black;
+				float: left;
+			}
+			/***************************************
+			 END IPHONE5 SPECIFIC
+			 ****************************************/
+			
+		</style>
+    </head>
+    <body id="body_all">
+		<div id="div_play" class="div_play_inactive">
+			<div id="div_play_spinner_bg" class="div_play_spinner_bg_inactive"></div>
+			<div id="div_play_spinner_textcont">
+				<div id="div_play_spinner_text"></div>
+			</div>
+			<div id="div_play_tabnavigation">
+				<div id="div_play_tabnavigation_settings"></div>
+			</div>
+		</div>
+		<div id="div_settings" class="div_settings_inactive">
+			<div id="div_settings_text">
+				Tap a category to add or remove that type of question from your random question options. Red categories will not be used in the selection of your random question.
+			</div>
+			<div id="div_settings_categories"></div>
+			<div id="div_settings_tabnavigation">
+				<div id="div_settings_tabnavigation_play"></div>
+			</div>
+		</div>
+        <script type="text/javascript" src="cordova-2.2.0rc1.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+		</script>
+    </body>
+</html>
